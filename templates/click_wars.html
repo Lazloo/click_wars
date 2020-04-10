@@ -1,0 +1,115 @@
+<!DOCTYPE>
+
+<html>
+
+<head>
+    <title>Cytoscape_JS</title>
+
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1" charset="UTF-8">
+
+    <style>
+        body {
+            font-family: helvetica neue, helvetica, liberation sans, arial, sans-serif;
+            font-size: 14px;
+        }
+
+        progress[value] {
+            /* Reset the default appearance */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-color: #042e5a;
+
+            /*Postition Center*/
+            position: absolute;
+            width: 75%;
+            height: 5%;
+            left: 12.5%;
+            top: 47.5%;
+
+        }
+
+        progress::-moz-progress-bar {
+            background: #a42605;
+        }
+        progress[value]::-webkit-progress-bar {
+            background-color: #042e5a;
+        }
+        progress[value]::-webkit-progress-value {
+            background-color: #a42605;
+        }
+
+        #button_red{
+            position: absolute;
+            background-color: #828b8f;
+            color: #a42605;
+            height: 5%;
+            width: 5%;
+            font-size : 20px;
+            top: 47.5%;
+            left: 7.45%;
+            margin: 0px;
+            border: none;
+        }
+        #button_blue{
+            position: absolute;
+            background-color: #828b8f;
+            color: #042e5a;
+            height: 5.0%;
+            width: 5%;
+            font-size : 20px;
+            top: 47.5%;
+            left: 87.55%;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<progress id="result_bar" max="100" value="50"> 70% </progress>
+
+
+
+
+<!--<div id="button_red">-->
+<button id="button_red" value="click_red" onclick="increase_counter_red();"><b>RED</b></button>
+<button id="button_blue" value="click_blue" onclick="increase_counter_blue();"><b>BLUE</b></button>
+<!--</div>-->
+</body>
+
+
+<script>
+    let counter_red = 1;
+    let counter_blue = 1;
+    update_bar()
+    // $('result_bar').attr('value') = 100
+
+    function update_bar() {
+        let s = document.getElementById('result_bar');
+        s.value = counter_red/(counter_red + counter_blue)*100;
+        // console.log(s.value)
+    }
+
+    function increase_counter_red() {
+        counter_red = counter_red + 1;
+        update_bar();
+        console.log(counter_red);
+    }
+
+    function increase_counter_blue() {
+        counter_blue += 1;
+        update_bar();
+        console.log(counter_blue);
+    }
+
+    //- Using a function pointer:
+    let e_red = document.getElementById("button_red");
+    e_red.unbind('click').addEventListener("click", increase_counter_red);
+
+    let e_blue = document.getElementById("button_blue");
+    e_blue.unbind('click').addEventListener("click", increase_counter_blue);
+</script>
+<!--<script src="./public/js/bundle.js" charset="UTF-8"></script>-->
+<!-- <script src="{{ url_for('static', filename='public/js/bundle.js') }}" charset="UTF-8"></script>-->
+</html>
