@@ -42,25 +42,30 @@ class ClickWars:
         if self.local_use:
             with self.create_ssh_connection() as tunnel:
                 con = self.create_mysql_connection(host=self.host_local, port=tunnel.local_bind_port)
+                df = pd.read_sql(sql=sql, con=con)
+                con.close()
         else:
             con = self.create_mysql_connection(host=self.db_host, port=self.port_db)
-        df = pd.read_sql(sql=sql, con=con)
-        con.close()
+            df = pd.read_sql(sql=sql, con=con)
+            con.close()
         return df
 
     def commit_sql_query(self, sql: str):
         if self.local_use:
             with self.create_ssh_connection() as tunnel:
                 con = self.create_mysql_connection(host=self.host_local, port=tunnel.local_bind_port)
+                my_cursor = con.cursor()
+                my_cursor.execute(sql)
+                con.commit()
+                my_cursor.close()
+                con.close()
         else:
             con = self.create_mysql_connection(host=self.db_host, port=self.port_db)
-
-        my_cursor = con.cursor()
-        my_cursor.execute(sql)
-        con.commit()
-        # my_cursor.commit()
-        my_cursor.close()
-        con.close()
+            my_cursor = con.cursor()
+            my_cursor.execute(sql)
+            con.commit()
+            my_cursor.close()
+            con.close()
 
     def update_click(self, session_id: int, player_id):
         sql_update = """
