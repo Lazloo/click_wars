@@ -72,14 +72,13 @@
 
 
 
-<!--<div id="button_red">-->
-<button id="button_red" value="click_red" onclick="increase_counter_red();">&#11044;</button>
-<button id="button_blue" value="click_blue" onclick="increase_counter_blue();">&#11044;</button>
-<!--</div>-->
-</body>
+<button id="button_red" value="click_red" onclick="update_click(1,1);">&#11044;</button>
+<button id="button_blue" value="click_blue" onclick="update_click(1,2);">&#11044;</button>
 
 
 <script>
+    // Dummy so the html can find the function later
+    let update_click;
     let counter_red = 1;
     let counter_blue = 1;
     update_bar()
@@ -91,25 +90,9 @@
         // console.log(s.value)
     }
 
-    function increase_counter_red() {
-        counter_red = counter_red + 1;
-        update_bar();
-        console.log(counter_red);
-    }
-
-    function increase_counter_blue() {
-        counter_blue += 1;
-        update_bar();
-        console.log(counter_blue);
-    }
-
-    //- Using a function pointer:
-    let e_red = document.getElementById("button_red");
-    e_red.unbind('click').addEventListener("click", increase_counter_red);
-
-    let e_blue = document.getElementById("button_blue");
-    e_blue.unbind('click').addEventListener("click", increase_counter_blue);
 </script>
 <!--<script src="./public/js/bundle.js" charset="UTF-8"></script>-->
-<!-- <script src="{{ url_for('static', filename='public/js/bundle.js') }}" charset="UTF-8"></script>-->
+<script src="{{ url_for('static', filename='bundle.js') }}" charset="UTF-8"></script>
+</body>
+
 </html>
