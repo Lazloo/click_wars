@@ -1,4 +1,6 @@
 import sqlalchemy
+from loguru import logger
+from time import time
 import MySQLdb
 import sshtunnel
 import get_pw
@@ -7,6 +9,8 @@ import pandas as pd
 
 class ClickWars:
     def __init__(self):
+        self.logger = logger
+        self.logger.add(sink='log.log')
         self.local_use = True
         self.db_host = 'lazloo.mysql.pythonanywhere-services.com'
         self.host_local = '127.0.0.1'
@@ -40,10 +44,12 @@ class ClickWars:
 
     def return_dataframe(self, sql: str):
         if self.local_use:
-            with self.create_ssh_connection() as tunnel:
-                con = self.create_mysql_connection(host=self.host_local, port=tunnel.local_bind_port)
-                df = pd.read_sql(sql=sql, con=con)
-                con.close()
+            tunnel = self.create_ssh_connection()
+            tunnel.start()
+            con = self.create_mysql_connection(host=self.host_local, port=tunnel.local_bind_port)
+            df = pd.read_sql(sql=sql, con=con)
+            con.close()
+            tunnel.close()
         else:
             con = self.create_mysql_connection(host=self.db_host, port=self.port_db)
             df = pd.read_sql(sql=sql, con=con)
@@ -56,6 +62,7 @@ class ClickWars:
                 con = self.create_mysql_connection(host=self.host_local, port=tunnel.local_bind_port)
                 my_cursor = con.cursor()
                 my_cursor.execute(sql)
+
                 con.commit()
                 my_cursor.close()
                 con.close()
