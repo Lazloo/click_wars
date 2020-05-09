@@ -1,0 +1,72 @@
+<!DOCTYPE>
+
+<html>
+
+<head>
+	<title>Click Wars</title>
+
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1" charset="UTF-8">
+
+	<style>
+		body {
+			font-family: helvetica neue, helvetica, liberation sans, arial, sans-serif;
+		}
+		#div_overall {
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			top: 40%;
+			left: 30.0%;
+		}
+
+		#session_label{
+			font-size: 2vw;
+		}
+		#session_choice {
+			font-size: 1.5vw;
+		}
+		#session_input_label{
+			font-size: 2vw;
+		}
+		#create_input_1{
+
+			font-size: 1.5vw;
+			width: 15%;
+		}
+		#create_input_2{
+
+			font-size: 1.5vw;
+			width: 15%;
+		}
+		#create_button{
+			font-size: 1.5vw;
+		}
+	</style>
+</head>
+
+<body>
+<div id="div_overall">
+	<label id="session_label" for="sessions">Choose a session:</label><br>
+	<select id="session_choice" onChange="select_action(this.value)"></select><br><br><br>
+
+
+	<label id="session_input_label" for="session_label_input">Create your session:</label><br>
+	<input type="text" id="create_input_1" name="session_label_input" value="Option 1" max=255>
+	<label id="session_label" for="sessions">VS.</label>
+
+	<input type="text" id="create_input_2" name="session_label_input" value="Option 2" max=255>
+	<button id="create_button" onclick="create_session();">Create</button>
+</div>
+</body>
+
+<script>
+    let create_session;
+    function select_action(session_id) {
+        console.log(session_id.toString())
+        window.location.href = '/' + session_id.toString();
+    }
+</script>
+
+<!--<script src="./public/js/home.bundle.js" charset="UTF-8"></script>-->
+<script src="{{ url_for('static', filename='home.bundle.js') }}" charset="UTF-8"></script>
+</html>

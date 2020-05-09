@@ -103,3 +103,35 @@ class ClickWars:
         """.replace('/*session_id*/', str(session_id))
         df = self.return_dataframe(sql=sql)
         return df
+
+    def get_list_of_sessions(self):
+        sql = """SELECT session_id, title FROM lazloo$click_wars.sessions;"""
+        df = self.return_dataframe(sql=sql)
+
+        return df
+
+    def open_new_session(self, title: str = ''):
+        sql_max_session_id = "SELECT max(session_id) as max_session_id FROM lazloo$click_wars.sessions;"
+        df_max = self.return_dataframe(sql=sql_max_session_id)
+        new_session_id = df_max.iloc[0, 0] + 1
+
+        sql_insert = """
+        INSERT INTO `lazloo$click_wars`.`sessions`
+        (`session_id`,
+        `title`)
+        VALUES
+            (/*new_session_id*/, '/*new_title*/');
+        """.replace('/*new_session_id*/', str(new_session_id)).replace('/*new_title*/', str(title))
+
+        sql_insert_click_distribution = """
+        INSERT INTO `lazloo$click_wars`.`click_distribution`
+        (`session_id`,
+        `player_id`,
+        `count_clicks`)
+        VALUES
+        (/*new_session_id*/,1,1),(/*new_session_id*/,2,1);
+        """.replace('/*new_session_id*/', str(new_session_id))
+
+        self.commit_sql_query(sql=sql_insert)
+        self.commit_sql_query(sql=sql_insert_click_distribution)
+        pass

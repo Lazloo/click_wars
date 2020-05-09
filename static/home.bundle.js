@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/main.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/home.js");
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -97,14 +97,14 @@ eval("var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!\n * jQ
 
 /***/ }),
 
-/***/ "./src/main.js":
+/***/ "./src/home.js":
 /*!*********************!*\
-  !*** ./src/main.js ***!
+  !*** ./src/home.js ***!
   \*********************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("// import $ from 'jquery'\nlet jquery = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\"); // url = 'http://127.0.0.1:10004'\n\n\nurl = 'http://lazloo.pythonanywhere.com';\n\nfunction update_progress_bar(data) {\n  let current_clicks = data; // console.log(current_clicks)\n  // console.time('Actual Update')\n\n  counter_red = current_clicks.count_clicks[0];\n  counter_blue = current_clicks.count_clicks[1];\n  let s = document.getElementById('result_bar');\n  s.value = counter_red / (counter_red + counter_blue) * 100; // console.timeEnd('Actual Update')\n}\n\nfunction update_progress_bar_ajax(session_id) {\n  jquery.ajax({\n    url: url + '/get_clicks',\n    // async: false,\n    method: 'GET',\n    dataType: 'JSON',\n    success: update_progress_bar,\n    data: {\n      'session_id': session_id\n    }\n  });\n}\n\nupdate_progress_bar_ajax(1);\n\nupdate_click = function (session_id, player_id) {\n  console.time('Update'); // console.time('Set')\n\n  jquery.ajax({\n    url: url + '/update_click',\n    dataType: 'JSON',\n    success: update_progress_bar,\n    data: {\n      'session_id': session_id,\n      'player_id': player_id\n    }\n  }); // console.timeEnd('Set')\n  // update_progress_bar_ajax(session_id)\n\n  console.timeEnd('Update');\n};\n\nreset_clicks = function (session_id) {\n  let out = jquery.ajax({\n    url: url + '/reset_clicks',\n    method: 'GET',\n    dataType: 'JSON',\n    success: update_progress_bar,\n    data: {\n      'session_id': session_id\n    }\n  }); // console.log(out);\n}; // let update_bt = document.getElementById(\"update_test\");\n// update_bt.addEventListener(\"click\", update_click);\n\n//# sourceURL=webpack:///./src/main.js?");
+eval("// import $ from 'jquery'\nlet jquery = __webpack_require__(/*! jquery */ \"./node_modules/jquery/dist/jquery.js\"); // url = 'http://127.0.0.1:10004'\n\n\nurl = 'http://lazloo.pythonanywhere.com';\n\nfunction select_action(session_id) {\n  console.log(session_id);\n} // window.location.href = 'http://www.google.com';\n// url = 'http://lazloo.pythonanywhere.com'\n\n\nfunction fill_session_select() {\n  function fill_select_tag(data) {\n    console.log(data); // console.log(data.length())\n\n    console.log(data.session_id);\n    let n_sessions = 0;\n\n    for (i_1 in data.session_id) ++n_sessions;\n\n    let select_object = document.getElementById(\"session_choice\");\n\n    for (let i = 0; i < n_sessions; i++) {\n      let opt = document.createElement('option');\n      opt.value = data.session_id[i];\n      opt.innerHTML = data.title[i];\n      select_object.appendChild(opt);\n    }\n  }\n\n  let select_object = document.getElementById(\"session_choice\");\n\n  for (let i = 0; i < select_object.length; i++) select_object.remove(i);\n\n  let opt = document.createElement('option');\n  opt.value = 'Choose Your Session';\n  opt.innerHTML = '';\n  select_object.appendChild(opt);\n  jquery.ajax({\n    url: url + '/get_session_list',\n    method: 'GET',\n    dataType: 'JSON',\n    success: fill_select_tag\n  });\n}\n\ncreate_session = function () {\n  let text_obj_1 = document.getElementById('create_input_1');\n  let text_obj_2 = document.getElementById('create_input_2');\n  console.log(text_obj_1.value + ' vs ' + text_obj_2.value);\n  jquery.ajax({\n    url: url + '/create_session',\n    method: 'GET',\n    dataType: 'JSON',\n    data: {\n      'session_label': text_obj_1.value + ' vs ' + text_obj_2.value\n    },\n    success: fill_session_select\n  });\n};\n\nfill_session_select();\n\n//# sourceURL=webpack:///./src/home.js?");
 
 /***/ })
 

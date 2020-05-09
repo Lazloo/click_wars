@@ -4,14 +4,37 @@ from click_wars_web_app import click_wars
 from flask_cors import CORS
 
 obj_click = click_wars.ClickWars()
+obj_click.local_use = True
 app = Flask(__name__)
 CORS(app)
 
 
+@app.route('/<int:session_id>')
+def session_load(session_id):
+    df_session = obj_click.get_list_of_sessions()
+    title = df_session.loc[df_session['session_id'] == session_id, 'title'].values[0]
+    print(title)
+    res = render_template('click_wars.html', session_id=session_id, session_label=title)
+    return res
+
+
+@app.route('/create_session')
+def create_session():
+    session_label = request.args.get('session_label')
+    df_clicks = obj_click.open_new_session(title=session_label)
+    return 'Success'
+
+
 @app.route('/')
 def home():
-    res = render_template('click_wars.html')
+    res = render_template('homepage.html')
     return res
+
+
+@app.route('/get_session_list')
+def get_session_list():
+    df_session = obj_click.get_list_of_sessions()
+    return df_session.to_json(orient="columns")
 
 
 @app.route('/get_clicks')
