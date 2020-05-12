@@ -77,7 +77,7 @@ class ClickWars:
     def update_click(self, session_id: int, player_id):
         sql_update = """
         UPDATE lazloo$click_wars.click_distribution
-        SET 
+        SET
             count_clicks = count_clicks + 1
         where session_id = /*session_id*/ and player_id = /*player_id*/
         ;
@@ -87,9 +87,9 @@ class ClickWars:
     def reset_clicks(self, session_id: int):
         sql_update = """
         UPDATE lazloo$click_wars.click_distribution
-        SET 
+        SET
             count_clicks = 1
-        where session_id = /*session_id*/ 
+        where session_id = /*session_id*/
         ;
         """.replace('/*session_id*/', str(session_id))
         self.commit_sql_query(sql=sql_update)
@@ -97,7 +97,7 @@ class ClickWars:
     def get_clicks(self, session_id):
 
         sql = """
-            select * 
+            select *
             from lazloo$click_wars.click_distribution
             where session_id = /*session_id*/
         """.replace('/*session_id*/', str(session_id))
@@ -111,13 +111,10 @@ class ClickWars:
         return df
 
     def open_new_session(self, title: str = ''):
-        sql_max_session_id = "SELECT max(session_id) as max_session_id FROM lazloo$click_wars.sessions;"
+        sql_max_session_id = "SELECT coalesce(max(session_id),-1) as max_session_id FROM lazloo$click_wars.sessions;"
         df_max = self.return_dataframe(sql=sql_max_session_id)
         # print(df_max)
-        if not all(df_max.isnull()):
-            new_session_id = df_max.iloc[0, 0] + 1
-        else:
-            new_session_id = 0
+        new_session_id = df_max.iloc[0, 0] + 1
 
         sql_insert = """
         INSERT INTO `lazloo$click_wars`.`sessions`
