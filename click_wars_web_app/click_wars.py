@@ -135,4 +135,4 @@ class ClickWars:
 
         self.commit_sql_query(sql=sql_insert)
         self.commit_sql_query(sql=sql_insert_click_distribution)
-        pass
+        return new_session_id

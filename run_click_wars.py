@@ -21,8 +21,8 @@ def session_load(session_id):
 @app.route('/create_session')
 def create_session():
     session_label = request.args.get('session_label')
-    df_clicks = obj_click.open_new_session(title=session_label)
-    return 'Success'
+    new_session_id = obj_click.open_new_session(title=session_label)
+    return str(new_session_id)
 
 
 @app.route('/')
